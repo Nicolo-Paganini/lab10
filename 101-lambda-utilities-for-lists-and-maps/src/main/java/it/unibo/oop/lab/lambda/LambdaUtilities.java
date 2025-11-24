@@ -2,10 +2,14 @@ package it.unibo.oop.lab.lambda;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Formatter.BigDecimalLayoutForm;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -64,7 +68,9 @@ public final class LambdaUtilities {
         /*
          * Suggestion: consider Optional.filter
          */
-        return emptyList();
+        final List<Optional<T>> result = new ArrayList<>();
+        list.forEach(l -> result.add(Optional.ofNullable(l).filter(pre)));
+        return result;
     }
 
     /**
@@ -83,7 +89,16 @@ public final class LambdaUtilities {
         /*
          * Suggestion: consider Map.merge
          */
-        return emptyMap();
+        final Map<R, Set<T>> map = new HashMap<>();
+        final BiFunction<Set<T>, Set<T>, Set<T>> link = new BiFunction<Set<T>,Set<T>,Set<T>>() {
+            public final Set<T> apply (Set<T> l1, Set<T> l2){
+                final Set<T> linked = new LinkedHashSet<>(l1);
+                linked.addAll(l2);
+                return linked;
+            }
+        };
+        list.forEach(l -> map.merge(op.apply(l), Set.of(l), link));
+        return map;
     }
 
     /**
@@ -104,7 +119,9 @@ public final class LambdaUtilities {
          *
          * Keep in mind that a map can be iterated through its forEach method
          */
-        return emptyMap();
+        final Map<K, V> map2 = new HashMap<>();
+        map.forEach((k, v) -> map2.put(k, v.orElse(def.get())));
+        return map2;
     }
 
     /**
