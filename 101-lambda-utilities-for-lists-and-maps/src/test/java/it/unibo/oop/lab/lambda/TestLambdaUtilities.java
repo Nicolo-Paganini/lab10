@@ -30,7 +30,7 @@ final class TestLambdaUtilities {
      * Test dup method.
      */
     @Test
-    void testDup() {
+    void testdup() {
         assertEquals(
             List.of(1, 101, 2, 102, 3, 103, 4, 104, 5, 105),
             LambdaUtilities.dup(List.of(1, 2, 3, 4, 5), x -> x + 100)

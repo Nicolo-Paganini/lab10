@@ -3,12 +3,10 @@ package it.unibo.oop.lab.lambda;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Formatter.BigDecimalLayoutForm;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -16,9 +14,6 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
 
 /**
  * This class will contain four utility functions on lists and maps, of which the first one is provided as example.
@@ -29,7 +24,7 @@ import static java.util.Collections.emptyMap;
  * Realize the three methods **WITHOUT** using the Stream library, but only leveraging the lambdas.
  *
  */
-public final class LambdaUtilities {
+final class LambdaUtilities {
 
     private LambdaUtilities() {
     }
@@ -90,13 +85,11 @@ public final class LambdaUtilities {
          * Suggestion: consider Map.merge
          */
         final Map<R, Set<T>> map = new HashMap<>();
-        final BiFunction<Set<T>, Set<T>, Set<T>> link = new BiFunction<Set<T>,Set<T>,Set<T>>() {
-            public final Set<T> apply (Set<T> l1, Set<T> l2){
+        final BiFunction<Set<T>, Set<T>, Set<T>> link = (final Set<T> l1, final Set<T> l2) -> {
                 final Set<T> linked = new LinkedHashSet<>(l1);
                 linked.addAll(l2);
                 return linked;
-            }
-        };
+            };
         list.forEach(l -> map.merge(op.apply(l), Set.of(l), link));
         return map;
     }
