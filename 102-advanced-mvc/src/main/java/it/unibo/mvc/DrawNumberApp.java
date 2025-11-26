@@ -57,10 +57,10 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
                     String title = tokenizer.nextToken().trim();
                     String value = tokenizer.nextToken().trim();
 
-                    if(title == "minimum"){
+                    if(title.equals("minimum")){
                         min = Integer.parseInt(value);
                     }
-                    else if(title == "maximum"){
+                    else if(title.equals("maximum")){
                         max = Integer.parseInt(value);
                     }
                     else{
@@ -69,7 +69,9 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
                 }
             }
         } catch (IOException e){
-            e.printStackTrace();
+            for (final DrawNumberView view: views){
+                view.displayError("Errore caricamento config: " + e.getMessage());
+            }
         }
 
         this.model = new DrawNumberImpl(min, max, attempts);
